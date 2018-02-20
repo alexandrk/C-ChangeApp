@@ -17,6 +17,12 @@ class MainViewController: UICollectionViewController {
     collectionView?.register(TaskCell.self, forCellWithReuseIdentifier: "taskCell")
     navigationItem.title = "Change"
     collectionView?.backgroundColor = UIColor.white
+    
+    // Navigation Bar Button
+    navigationItem.setRightBarButton(
+      UIBarButtonItem(barButtonSystemItem: .add,
+                      target: self,
+                      action: #selector(addItemTouched)), animated: true)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -28,6 +34,11 @@ class MainViewController: UICollectionViewController {
       navigationController?.navigationBar.isHidden = false
       collectionView?.reloadData()
     }
+  }
+  
+  @objc private func addItemTouched() {
+    navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
+    navigationController?.pushViewController(AddTaskViewController(), animated: true)
   }
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

@@ -14,11 +14,6 @@ class MainViewController: UICollectionViewController {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
     
-    TaskItems.items = []
-    if TaskItems.items.count == 0 {
-      navigationController?.pushViewController(IntroViewController(), animated: true)
-    }
-    
     collectionView?.register(TaskCell.self, forCellWithReuseIdentifier: "taskCell")
     navigationItem.title = "Change"
     collectionView?.backgroundColor = UIColor.white
@@ -27,8 +22,12 @@ class MainViewController: UICollectionViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
+    TaskItems.items = []
     if TaskItems.items.count == 0 {
-      navigationController?.pushViewController(IntroViewController(), animated: true)
+      navigationController?.pushViewController(IntroViewController(), animated: false)
+    } else {
+      navigationController?.navigationBar.isHidden = false
+      collectionView?.reloadData()
     }
   }
   

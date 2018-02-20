@@ -39,7 +39,8 @@ struct TaskItem {
 
 struct TaskItems {
   static var colors = Constants.colors
-  static var items: [TaskItem] = [TaskItem("Smoking", substitute: nil, color: nil, goal: 5),
-                                  TaskItem("Water", substitute: nil, color: nil, goal: -1),
-                                  TaskItem("Exercise", substitute: nil, color: nil, goal: -1)]
+  static var items: [TaskItem] = []
+//                                  [TaskItem("Smoking", substitute: nil, color: nil, goal: 5),
+//                                  TaskItem("Water", substitute: nil, color: nil, goal: -1),
+//                                  TaskItem("Exercise", substitute: nil, color: nil, goal: -1)]
 }

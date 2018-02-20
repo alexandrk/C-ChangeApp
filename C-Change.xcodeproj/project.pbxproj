@@ -16,6 +16,8 @@
 		1170AC1620378C5300213061 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1170AC1520378C5300213061 /* TaskCell.swift */; };
 		1170AC18203808BF00213061 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1170AC17203808BF00213061 /* Constants.swift */; };
 		1170AC1A20380B9100213061 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1170AC1920380B9100213061 /* IntroViewController.swift */; };
+		11A1A69B203C0B9A00CC5D97 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A1A699203C0B9900CC5D97 /* AddTaskViewController.swift */; };
+		11A1A69C203C0B9A00CC5D97 /* ColorPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A1A69A203C0B9900CC5D97 /* ColorPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +32,8 @@
 		1170AC1520378C5300213061 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		1170AC17203808BF00213061 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1170AC1920380B9100213061 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		11A1A699203C0B9900CC5D97 /* AddTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
+		11A1A69A203C0B9900CC5D97 /* ColorPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				1170AC002036BB0400213061 /* AppDelegate.swift */,
+				11A1A699203C0B9900CC5D97 /* AddTaskViewController.swift */,
+				11A1A69A203C0B9900CC5D97 /* ColorPicker.swift */,
 				1170AC1920380B9100213061 /* IntroViewController.swift */,
 				1170AC022036BB0400213061 /* MainViewController.swift */,
 				1170AC1320378B0300213061 /* Datastore.swift */,
@@ -172,6 +178,8 @@
 				1170AC1A20380B9100213061 /* IntroViewController.swift in Sources */,
 				1170AC012036BB0400213061 /* AppDelegate.swift in Sources */,
 				1170AC1420378B0300213061 /* Datastore.swift in Sources */,
+				11A1A69C203C0B9A00CC5D97 /* ColorPicker.swift in Sources */,
+				11A1A69B203C0B9A00CC5D97 /* AddTaskViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

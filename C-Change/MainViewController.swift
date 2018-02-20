@@ -22,7 +22,6 @@ class MainViewController: UICollectionViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     
-    TaskItems.items = []
     if TaskItems.items.count == 0 {
       navigationController?.pushViewController(IntroViewController(), animated: false)
     } else {

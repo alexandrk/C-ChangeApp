@@ -10,12 +10,14 @@ import UIKit
 
 class IntroViewController: UIViewController {
 
+  // MARK: View Definitions
   let addItem: UIButton = {
     let view = UIButton()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.contentMode = .scaleAspectFit
     view.setBackgroundImage(#imageLiteral(resourceName: "Add_Icon"), for: .normal)
     view.setBackgroundImage(#imageLiteral(resourceName: "Add_Icon_Selected"), for: .highlighted)
+    view.addTarget(self, action: #selector(showAddNewTaskView), for: .touchUpInside)
     return view
   }()
   
@@ -37,6 +39,7 @@ class IntroViewController: UIViewController {
     return view
   }()
   
+  // MARK: Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = .white
@@ -44,6 +47,12 @@ class IntroViewController: UIViewController {
     addLayoutConstraints()
   }
 
+  // MARK: Add Item Handler
+  @objc private func showAddNewTaskView() {
+    navigationController?.pushViewController(AddTaskViewController(), animated: true)
+  }
+  
+  // MARK: Helper Methods
   private func addLayoutConstraints() {
     
     view.addSubview(topLabel)

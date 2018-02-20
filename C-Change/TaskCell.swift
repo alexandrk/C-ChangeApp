@@ -10,10 +10,17 @@ import UIKit
 
 class TaskCell: UICollectionViewCell {
   
-  let label: UILabel = {
+  let nameLabel: UILabel = {
     let view = UILabel()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.text = "Add"
+    return view
+  }()
+  
+  let goalLabel: UILabel = {
+    let view = UILabel()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.textAlignment = .center
     return view
   }()
   
@@ -29,13 +36,23 @@ class TaskCell: UICollectionViewCell {
   
   private func addLayoutConstraints() {
     
-    addSubview(label)
+    addSubview(nameLabel)
+    addSubview(goalLabel)
     
     NSLayoutConstraint.activate([
-      label.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-      label.leftAnchor.constraint(equalTo: leftAnchor, constant: 8),
-      label.widthAnchor.constraint(equalTo: widthAnchor, constant: -16),
-      label.heightAnchor.constraint(equalToConstant: 50)
+      
+      // Name Label
+      nameLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 8),
+      nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+      nameLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -16),
+      nameLabel.heightAnchor.constraint(equalToConstant: 20),
+      
+      // Goal Label
+      goalLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+      goalLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+      goalLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -16),
+      goalLabel.heightAnchor.constraint(equalToConstant: 20)
+      
       ])
   }
   

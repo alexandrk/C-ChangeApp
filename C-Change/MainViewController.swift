@@ -56,10 +56,22 @@ class MainViewController: UICollectionViewController {
     
     let task = TaskItems.items[indexPath.row]
     
-    taskCell.label.text = task.label
     taskCell.backgroundColor = task.color
+    taskCell.nameLabel.text = task.label
+    if task.goal > 0 {
+      taskCell.goalLabel.text = "\(task.taskCount) / \(task.goal)"
+    } else {
+      taskCell.goalLabel.text = "\(task.taskCount)"
+    }
     
     return taskCell
+  }
+  
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    TaskItems.items[indexPath.row].taskCount += 1
+    UIView.performWithoutAnimation {
+      self.collectionView?.reloadItems(at: [indexPath])
+    }
   }
 
 }

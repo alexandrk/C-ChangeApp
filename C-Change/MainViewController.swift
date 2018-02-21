@@ -58,6 +58,8 @@ class MainViewController: UICollectionViewController {
     
     taskCell.backgroundColor = task.color
     taskCell.nameLabel.text = task.label
+    taskCell.nameLabel.textColor = task.fontColor
+    taskCell.goalLabel.textColor = task.fontColor
     if task.goal > 0 {
       taskCell.goalLabel.text = "\(task.taskCount) / \(task.goal)"
     } else {

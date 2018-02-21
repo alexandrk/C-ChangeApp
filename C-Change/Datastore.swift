@@ -15,6 +15,7 @@ struct TaskItem {
   var substituteCount: Int
   var goal: Int
   var color: UIColor
+  var fontColor: UIColor = .white
   
   init(_ label: String, substitute: String?, color: UIColor?, goal: Int) {
     self.label = label
@@ -34,7 +35,21 @@ struct TaskItem {
     }
     
     self.goal = goal
+    
+    fontColor = setContrastFontColor()
   }
+  
+  private func setContrastFontColor() -> UIColor {
+    var returnValue: UIColor = .white
+    if let colorComponents = color.cgColor.components {
+      if (colorComponents[0] + colorComponents[1] + colorComponents[2]) / 3 > 0.5 {
+        returnValue = .black
+      }
+      print("Color Sum: \((colorComponents[0] + colorComponents[1] + colorComponents[2]) / 3)")
+    }
+    return returnValue
+  }
+  
 }
 
 struct TaskItems {

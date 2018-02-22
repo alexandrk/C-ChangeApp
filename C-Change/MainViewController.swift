@@ -56,7 +56,7 @@ class MainViewController: UICollectionViewController {
     
     let task = TaskItems.items[indexPath.row]
     
-    taskCell.backgroundColor = task.color
+    taskCell.contentView.backgroundColor = task.color
     taskCell.nameLabel.text = task.label
     taskCell.nameLabel.textColor = task.fontColor
     taskCell.goalLabel.textColor = task.fontColor
@@ -74,6 +74,28 @@ class MainViewController: UICollectionViewController {
     UIView.performWithoutAnimation {
       self.collectionView?.reloadItems(at: [indexPath])
     }
+  }
+  
+  override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
+    
+    let alert = UIAlertController(title: "Delete Item", message: "Are you sure you want to delete item \(TaskItems.items[indexPath.row].label)", preferredStyle: .alert)
+    
+    alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
+      print("Action: \(action)")
+      TaskItems.items.remove(at: indexPath.row)
+      collectionView.deleteItems(at: [indexPath])
+    }))
+    
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+      self.dismiss(animated: true, completion: nil)
+      UIView.animate(withDuration: 0.2, animations: {
+        collectionView.cellForItem(at: indexPath)?.setNeedsLayout()
+        collectionView.cellForItem(at: indexPath)?.layoutIfNeeded()
+      })
+    }))
+    
+    present(alert, animated: true, completion: nil)
+    
   }
 
 }

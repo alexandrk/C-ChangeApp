@@ -12,6 +12,9 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
 
   private weak var colorPickerHeightConstraint: NSLayoutConstraint?
   
+  var taskItem: TaskItem?
+  var taskItemIndex: Int?
+  
   // MARK: Views Definitions
   let colorPicker: HSBColorPicker = {
     let view = HSBColorPicker()
@@ -90,6 +93,7 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
     view.layer.borderWidth = 1
     view.translatesAutoresizingMaskIntoConstraints = false
     view.keyboardType = .numberPad
+    view.text = "0"
     return view
   }()
   
@@ -129,8 +133,17 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
   }
   
   override func viewWillAppear(_ animated: Bool) {
-    navigationItem.title = "Change"
     super.viewWillAppear(true)
+    navigationItem.title = "Change"
+    
+    // If here to edit item
+    if let taskItem = taskItem {
+      nameField.text = taskItem.label
+      substituteField.text = taskItem.substitute
+      selectedColor.backgroundColor = taskItem.color
+      selectedColor.setTitle("", for: .normal)
+      goalField.text = taskItem.goal.description
+    }
   }
   
   // MARK: HSBColorPickerDelegate Methods
@@ -174,12 +187,17 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
       return
     }
     
-    let goal = ((goalField.text != nil) && Int(goalField.text!) != nil) ? Int(goalField.text!)! : -1
+    let goal = ((goalField.text != nil) && Int(goalField.text!) != nil) ? Int(goalField.text!)! : 0
+    let newTaskItem = TaskItem(name,
+                            substitute: substituteField.text,
+                            color: selectedColor.backgroundColor,
+                            goal: goal)
     
-    TaskItems.items.append(TaskItem(name,
-                                    substitute: substituteField.text,
-                                    color: selectedColor.backgroundColor,
-                                    goal: goal))
+    if let taskItemIndex = taskItemIndex {
+      TaskItems.items[taskItemIndex] = newTaskItem
+    } else {
+      TaskItems.items.append(newTaskItem)
+    }
     navigationController?.popToRootViewController(animated: true)
   }
   

@@ -78,10 +78,22 @@ class MainViewController: UICollectionViewController {
   
   override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+    switch action.description {
+    case "delete":
+      promptForDelete(collectionView, indexPath)
+    case "edit":
+      editItem(collectionView, indexPath)
+    default:
+      print("This should never execute, please check cell action types")
+    }
+    
+  }
+
+  private func promptForDelete(_ collectionView: UICollectionView, _ indexPath: IndexPath) {
+    
     let alert = UIAlertController(title: "Delete Item", message: "Are you sure you want to delete item \(TaskItems.items[indexPath.row].label)", preferredStyle: .alert)
     
     alert.addAction(UIAlertAction(title: "Confirm", style: .default, handler: { _ in
-      print("Action: \(action)")
       TaskItems.items.remove(at: indexPath.row)
       collectionView.deleteItems(at: [indexPath])
     }))
@@ -95,7 +107,13 @@ class MainViewController: UICollectionViewController {
     }))
     
     present(alert, animated: true, completion: nil)
-    
   }
-
+  
+  private func editItem(_ collectionView: UICollectionView, _ indexPath: IndexPath) {
+    let vc = AddTaskViewController()
+    vc.taskItem = TaskItems.items[indexPath.row]
+    vc.taskItemIndex = indexPath.row
+    navigationController?.pushViewController(vc, animated: true)
+  }
+  
 }

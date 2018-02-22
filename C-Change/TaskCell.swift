@@ -34,6 +34,16 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     return view
   }()
   
+  let editLabel: UILabel = {
+    let view = UILabel()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.textAlignment = .center
+    view.text = "EDIT"
+    view.textColor = .black
+    view.backgroundColor = .green
+    return view
+  }()
+  
   var panGesture: UIPanGestureRecognizer!
   
   override init(frame: CGRect) {
@@ -60,14 +70,18 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
       let p: CGPoint = panGesture.translation(in: self)
       let width = self.contentView.frame.width
       let height = self.contentView.frame.height
+      let halfOfContentViewFrame = contentView.frame.width / 2
       
-      if p.x < contentView.frame.width / 2 {
+      if p.x < halfOfContentViewFrame && p.x > -halfOfContentViewFrame {
+        // if the change is less that half the frame width, animate contentView
         self.contentView.frame = CGRect(x: p.x, y: 0, width: width, height: height)
+      } else if p.x < -(contentView.frame.width / 2) {
+        // if gesture x is negative and smaller than half the frame width, stop animation
+        self.contentView.frame = CGRect(x: -(contentView.frame.width / 2), y: 0, width: width, height: height)
       } else {
+        // if gesture x is positive and greater than half the frame width, stop animation
         self.contentView.frame = CGRect(x: contentView.frame.width / 2, y: 0, width: width, height: height)
       }
-      //self.deleteLabel.frame = CGRect(x: p.x - deleteLabel.frame.size.width-10, y: 0, width: 100, height: height)
-      //self.deleteLabel2.frame = CGRect(x: p.x + width + deleteLabel2.frame.size.width, y: 0, width: 100, height: height)
     }
     
   }
@@ -75,25 +89,23 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
   @objc func onPan(_ pan: UIPanGestureRecognizer) {
     let p: CGPoint = panGesture.translation(in: self)
     
-    if pan.state == UIGestureRecognizerState.began {
-      
-    } else if pan.state == UIGestureRecognizerState.changed {
+    if pan.state == UIGestureRecognizerState.changed {
       self.setNeedsLayout()
-    } else {
-      if abs(pan.velocity(in: self).x) > 500 ||
-        (pan.numberOfTouches == 0 && p.x > contentView.frame.width / 2) {
-        
-        if let collectionView: UICollectionView = self.superview as? UICollectionView {
-          let indexPath: IndexPath = collectionView.indexPathForItem(at: self.center)!
-        
-          collectionView.delegate?.collectionView!(collectionView, performAction: #selector(self.onPan(_:)), forItemAt: indexPath, withSender: nil)
-        }
-      } else {
-        UIView.animate(withDuration: 0.2, animations: {
-          self.setNeedsLayout()
-          self.layoutIfNeeded()
-        })
+    } else if pan.numberOfTouches == 0 && abs(p.x) > contentView.frame.width / 2 {
+      
+      // if gesture completed and abs(gesture x) greater than have the contentView frame, prompt for action
+      if let collectionView: UICollectionView = self.superview as? UICollectionView {
+        let indexPath: IndexPath = collectionView.indexPathForItem(at: self.center)!
+        let actionType = (p.x > 0) ? "delete" : "edit"
+        collectionView.delegate?.collectionView!(collectionView,
+                                                 performAction: Selector((actionType)),
+                                                 forItemAt: indexPath, withSender: nil)
       }
+    } else {
+      UIView.animate(withDuration: 0.2, animations: {
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+      })
     }
   }
   
@@ -110,6 +122,7 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     contentView.addSubview(nameLabel)
     contentView.addSubview(goalLabel)
     insertSubview(deleteLabel, belowSubview: contentView)
+    insertSubview(editLabel, belowSubview: contentView)
     
     NSLayoutConstraint.activate([
       
@@ -129,7 +142,13 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
       deleteLabel.leftAnchor.constraint(equalTo: leftAnchor),
       deleteLabel.topAnchor.constraint(equalTo: topAnchor),
       deleteLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/2),
-      deleteLabel.heightAnchor.constraint(equalTo: heightAnchor)
+      deleteLabel.heightAnchor.constraint(equalTo: heightAnchor),
+      
+      // Edit Label
+      editLabel.rightAnchor.constraint(equalTo: rightAnchor),
+      editLabel.topAnchor.constraint(equalTo: topAnchor),
+      editLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/2),
+      editLabel.heightAnchor.constraint(equalTo: heightAnchor)
       
       ])
   }

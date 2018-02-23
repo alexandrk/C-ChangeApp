@@ -13,7 +13,8 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
   let nameLabel: UILabel = {
     let view = UILabel()
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.text = "Add"
+    view.textAlignment = .center
+    view.font = Constants.fontLarge
     return view
   }()
   
@@ -21,6 +22,7 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     let view = UILabel()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.textAlignment = .center
+    view.font = Constants.fontMedium
     return view
   }()
   
@@ -29,6 +31,7 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.textAlignment = .center
     view.text = "DELETE"
+    view.font = Constants.fontLarge
     view.textColor = .black
     view.backgroundColor = .red
     return view
@@ -39,6 +42,7 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.textAlignment = .center
     view.text = "EDIT"
+    view.font = Constants.fontLarge
     view.textColor = .black
     view.backgroundColor = .green
     return view
@@ -127,16 +131,16 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     NSLayoutConstraint.activate([
       
       // Name Label
-      nameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8),
-      nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+      nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+      nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -25),
       nameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -16),
-      nameLabel.heightAnchor.constraint(equalToConstant: 20),
+      nameLabel.heightAnchor.constraint(equalToConstant: 30),
       
       // Goal Label
       goalLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
       goalLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
       goalLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -16),
-      goalLabel.heightAnchor.constraint(equalToConstant: 20),
+      goalLabel.heightAnchor.constraint(equalToConstant: 25),
       
       // Delete Label
       deleteLabel.leftAnchor.constraint(equalTo: leftAnchor),

@@ -57,7 +57,7 @@ class MainViewController: UICollectionViewController {
     let task = TaskItems.items[indexPath.row]
     
     taskCell.contentView.backgroundColor = task.color
-    taskCell.nameLabel.text = task.label
+    taskCell.nameLabel.text = task.label.uppercased()
     taskCell.nameLabel.textColor = task.fontColor
     taskCell.goalLabel.textColor = task.fontColor
     if task.goal > 0 {
@@ -89,6 +89,8 @@ class MainViewController: UICollectionViewController {
     
   }
 
+  
+  
   private func promptForDelete(_ collectionView: UICollectionView, _ indexPath: IndexPath) {
     
     let alert = UIAlertController(title: "Delete Item", message: "Are you sure you want to delete item \(TaskItems.items[indexPath.row].label)", preferredStyle: .alert)

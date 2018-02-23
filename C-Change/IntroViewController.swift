@@ -26,7 +26,7 @@ class IntroViewController: UIViewController {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.text = "DON'T BE SHY"
     view.textAlignment = .center
-    view.font = UIFont(name: "Heiti SC", size: 25)
+    view.font = Constants.fontLarge
     return view
   }()
   
@@ -35,7 +35,7 @@ class IntroViewController: UIViewController {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.text = "ADD YOUR FIRST HABIT"
     view.textAlignment = .center
-    view.font = UIFont(name: "Heiti SC", size: 25)
+    view.font = Constants.fontLarge
     return view
   }()
   

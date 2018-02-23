@@ -20,7 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.makeKeyAndVisible()
     
     let layout = UICollectionViewFlowLayout()
-    layout.estimatedItemSize = CGSize(width: 100, height: 100)
+    layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: 200)
+    layout.minimumLineSpacing = 0
     window?.rootViewController = UINavigationController(rootViewController: MainViewController(collectionViewLayout: layout))
     
     return true

@@ -9,5 +9,8 @@
 import UIKit
 
 struct Constants {
-  static var colors: [UIColor] = [.purple, .red, .brown, .yellow, .magenta, .green, .orange, .cyan, .blue]
+  static let colors: [UIColor] = [.purple, .red, .brown, .yellow, .magenta, .green, .orange, .cyan, .blue]
+  static let fontLarge = UIFont(name: "Heiti SC", size: 25)
+  static let fontMedium = UIFont(name: "Heiti SC", size: 20)
+  static let fontSmall = UIFont(name: "Heiti SC", size: 15)
 }

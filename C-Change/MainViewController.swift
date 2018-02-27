@@ -8,8 +8,18 @@
 
 import UIKit
 
-class MainViewController: UICollectionViewController {
+class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
+  var columnLayout = false
+  let layoutTypeButton: UIBarButtonItem = {
+    var barButton = UIBarButtonItem()
+    barButton.image = #imageLiteral(resourceName: "Column_Layout")
+    barButton.title = "Columns"
+    barButton.action = #selector(changeColumnLayout)
+    
+    return barButton
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
@@ -18,11 +28,13 @@ class MainViewController: UICollectionViewController {
     navigationItem.title = "Change"
     collectionView?.backgroundColor = UIColor.white
     
-    // Navigation Bar Button
-    navigationItem.setRightBarButton(
+    // Navigation Bar Buttons
+    layoutTypeButton.target = self
+    navigationItem.setRightBarButtonItems([
       UIBarButtonItem(barButtonSystemItem: .add,
                       target: self,
-                      action: #selector(addItemTouched)), animated: true)
+                      action: #selector(addItemTouched)),
+      layoutTypeButton], animated: true)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -32,13 +44,39 @@ class MainViewController: UICollectionViewController {
       navigationController?.pushViewController(IntroViewController(), animated: false)
     } else {
       navigationController?.navigationBar.isHidden = false
-      collectionView?.reloadData()
+      collectionViewLayout.invalidateLayout()
+      collectionView?.layoutIfNeeded()
     }
   }
   
   @objc private func addItemTouched() {
     navigationItem.backBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: nil, action: nil)
     navigationController?.pushViewController(AddTaskViewController(), animated: true)
+  }
+  
+  @objc private func changeColumnLayout() {
+    columnLayout = !columnLayout
+    
+    if columnLayout {
+      layoutTypeButton.image = #imageLiteral(resourceName: "Row_Layout")
+      layoutTypeButton.title = "Rows"
+    } else {
+      layoutTypeButton.image = #imageLiteral(resourceName: "Column_Layout")
+      layoutTypeButton.title = "Columns"
+    }
+    collectionView?.collectionViewLayout.invalidateLayout()
+    
+    UIView.animate(
+      withDuration: 0.4,
+      delay: 0.0,
+      usingSpringWithDamping: 1.0,
+      initialSpringVelocity: 0.0,
+      options: UIViewAnimationOptions(),
+      animations: {
+        self.collectionView?.layoutIfNeeded()
+    },
+      completion: nil
+    )
   }
   
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -89,7 +127,17 @@ class MainViewController: UICollectionViewController {
     
   }
 
-  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    
+    var itemSize = CGSize(width: collectionView.bounds.width, height: 100)
+    
+    if columnLayout {
+      let halfWidth = collectionView.bounds.width / 2
+      itemSize = CGSize(width: halfWidth - 5, height: halfWidth - 5)
+    }
+    
+    return itemSize
+  }
   
   private func promptForDelete(_ collectionView: UICollectionView, _ indexPath: IndexPath) {
     

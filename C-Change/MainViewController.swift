@@ -154,6 +154,11 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     return itemSize
   }
   
+  override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    let itemInTransition = TaskItems.items.remove(at: sourceIndexPath.row)
+    TaskItems.items.insert(itemInTransition, at: destinationIndexPath.row)
+  }
+  
   private func promptForDelete(_ collectionView: UICollectionView, _ indexPath: IndexPath) {
     
     let alert = UIAlertController(title: "Delete Item", message: "Are you sure you want to delete item \(TaskItems.items[indexPath.row].label)", preferredStyle: .alert)

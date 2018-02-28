@@ -46,6 +46,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
       navigationController?.navigationBar.isHidden = false
       collectionViewLayout.invalidateLayout()
       collectionView?.layoutIfNeeded()
+      collectionView?.reloadData()
     }
   }
   
@@ -87,6 +88,8 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "taskCell", for: indexPath)
     
+    cell.layer.cornerRadius = Constants.CollectionView.cellCornerRadius
+    
     guard let taskCell = cell as? TaskCell else {
       print("Couldn't cast cell to TaskCell")
       return cell
@@ -127,13 +130,25 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     
   }
 
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    return Constants.CollectionView.squareCellSpacing
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    return Constants.CollectionView.sectionInsets
+  }
+  
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     
-    var itemSize = CGSize(width: collectionView.bounds.width, height: 100)
+    var itemSize: CGSize!
+    let horizontalInset = Constants.CollectionView.sectionInsets.left + Constants.CollectionView.sectionInsets.right
     
     if columnLayout {
       let halfWidth = collectionView.bounds.width / 2
-      itemSize = CGSize(width: halfWidth - 5, height: halfWidth - 5)
+      itemSize = CGSize(width: halfWidth - horizontalInset / 2 - Constants.CollectionView.squareCellSpacing / 2,
+                        height: halfWidth - horizontalInset / 2 - Constants.CollectionView.squareCellSpacing / 2)
+    } else {
+      itemSize = CGSize(width: collectionView.bounds.width - horizontalInset, height: 100)
     }
     
     return itemSize

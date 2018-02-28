@@ -15,6 +15,8 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.textAlignment = .center
     view.font = Constants.fontLarge
+    view.adjustsFontSizeToFitWidth = true
+    view.numberOfLines = 0
     return view
   }()
   
@@ -31,9 +33,9 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.textAlignment = .center
     view.text = "DELETE"
-    view.font = Constants.fontLarge
-    view.textColor = .black
-    view.backgroundColor = .red
+    view.font = Constants.fontMediumBold
+    view.textColor = Constants.CollectionView.deleteLabeldColor
+    view.transform = CGAffineTransform(rotationAngle: -1.5708)
     return view
   }()
   
@@ -42,19 +44,27 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     view.translatesAutoresizingMaskIntoConstraints = false
     view.textAlignment = .center
     view.text = "EDIT"
-    view.font = Constants.fontLarge
-    view.textColor = .black
-    view.backgroundColor = .green
+    view.font = Constants.fontMediumBold
+    view.textColor = Constants.CollectionView.editLabelColor
+    view.transform = CGAffineTransform(rotationAngle: 1.5708)
     return view
   }()
   
   var panGesture: UIPanGestureRecognizer!
   
+  // Required to be reset on layout change to properly display rotated label
+  var deleteLabelLeftAnchorConstraint: NSLayoutConstraint!
+  var editLabelRightAnchorConstraint: NSLayoutConstraint!
+  
+  var activeSlideAreaMultiplier: CGFloat = 0.5
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
+    contentView.layer.cornerRadius = Constants.CollectionView.cellCornerRadius
     contentView.layer.masksToBounds = true
     self.layer.masksToBounds = true
+    self.backgroundColor = Constants.CollectionView.actionBackgroundColor
     
     panGesture = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
     panGesture.delegate = self
@@ -74,17 +84,17 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
       let p: CGPoint = panGesture.translation(in: self)
       let width = self.contentView.frame.width
       let height = self.contentView.frame.height
-      let halfOfContentViewFrame = contentView.frame.width / 2
+      let activeSlideArea = contentView.frame.width * activeSlideAreaMultiplier
       
-      if p.x < halfOfContentViewFrame && p.x > -halfOfContentViewFrame {
-        // if the change is less that half the frame width, animate contentView
+      if p.x < activeSlideArea && p.x > -activeSlideArea {
+        // if the change is less that activeSlideArea, animate contentView
         self.contentView.frame = CGRect(x: p.x, y: 0, width: width, height: height)
-      } else if p.x < -(contentView.frame.width / 2) {
-        // if gesture x is negative and smaller than half the frame width, stop animation
-        self.contentView.frame = CGRect(x: -(contentView.frame.width / 2), y: 0, width: width, height: height)
+      } else if p.x < -(activeSlideArea) {
+        // [EDIT] if gesture x is negative and smaller than activeSlideArea, stop animation
+        self.contentView.frame = CGRect(x: -activeSlideArea, y: 0, width: width, height: height)
       } else {
-        // if gesture x is positive and greater than half the frame width, stop animation
-        self.contentView.frame = CGRect(x: contentView.frame.width / 2, y: 0, width: width, height: height)
+        // [DELETE]if gesture x is positive and greater than activeSlideArea, stop animation
+        self.contentView.frame = CGRect(x: activeSlideArea, y: 0, width: width, height: height)
       }
     }
     
@@ -93,9 +103,23 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
   @objc func onPan(_ pan: UIPanGestureRecognizer) {
     let p: CGPoint = panGesture.translation(in: self)
     
-    if pan.state == UIGestureRecognizerState.changed {
+    if pan.state == UIGestureRecognizerState.began {
+      
+      // Set proper constraints for rotated labels [DELETE | EDIT], based on row/column layout type
+      if self.frame.width == self.frame.height {
+        deleteLabelLeftAnchorConstraint.constant = 0
+        editLabelRightAnchorConstraint.constant = 0
+        activeSlideAreaMultiplier = 0.5
+      } else {
+        deleteLabelLeftAnchorConstraint.constant = -65
+        editLabelRightAnchorConstraint.constant = 65
+        activeSlideAreaMultiplier = 0.33
+      }
+      
+    } else if pan.state == UIGestureRecognizerState.changed {
       self.setNeedsLayout()
-    } else if pan.numberOfTouches == 0 && abs(p.x) > contentView.frame.width / 2 {
+      
+    } else if pan.numberOfTouches == 0 && abs(p.x) > contentView.frame.width * activeSlideAreaMultiplier {
       
       // if gesture completed and abs(gesture x) greater than have the contentView frame, prompt for action
       if let collectionView: UICollectionView = self.superview as? UICollectionView {
@@ -132,7 +156,7 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
       
       // Name Label
       nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-      nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -25),
+      nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -10),
       nameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -16),
       nameLabel.heightAnchor.constraint(equalToConstant: 30),
       
@@ -143,18 +167,20 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
       goalLabel.heightAnchor.constraint(equalToConstant: 25),
       
       // Delete Label
-      deleteLabel.leftAnchor.constraint(equalTo: leftAnchor),
       deleteLabel.topAnchor.constraint(equalTo: topAnchor),
       deleteLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/2),
       deleteLabel.heightAnchor.constraint(equalTo: heightAnchor),
       
       // Edit Label
-      editLabel.rightAnchor.constraint(equalTo: rightAnchor),
       editLabel.topAnchor.constraint(equalTo: topAnchor),
       editLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1/2),
       editLabel.heightAnchor.constraint(equalTo: heightAnchor)
       
       ])
+    deleteLabelLeftAnchorConstraint = deleteLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: -65)
+    editLabelRightAnchorConstraint = editLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: 65)
+    deleteLabelLeftAnchorConstraint.isActive = true
+    editLabelRightAnchorConstraint.isActive = true
   }
   
 }

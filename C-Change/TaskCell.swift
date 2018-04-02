@@ -88,11 +88,6 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
   override func layoutSubviews() {
     super.layoutSubviews()
     
-    // Unproven fix to reset frame position of the contentView after return from "Edit" or "Delete" view
-    if panGesture.state == UIGestureRecognizerState.possible && contentView.frame.origin.x != 0 {
-      contentView.frame.origin.x = 0
-    }
-    
     if panGesture.state == UIGestureRecognizerState.changed {
       let p: CGPoint = panGesture.translation(in: self)
       let width = self.contentView.frame.width
@@ -141,6 +136,10 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
         collectionView.delegate?.collectionView!(collectionView,
                                                  performAction: Selector((actionType)),
                                                  forItemAt: indexPath, withSender: nil)
+        // fix to reset frame position of the contentView after return from "Edit" view
+        if actionType == "edit" {
+          contentView.frame.origin.x = 0
+        }
       }
     } else {
       UIView.animate(withDuration: 0.2, animations: {

@@ -139,7 +139,7 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
     super.viewWillAppear(true)
     navigationItem.title = "Change"
     
-    // If here to edit item
+    // If here to edit existing item
     if let taskItem = taskItem {
       nameField.text = taskItem.name
       selectedColor.backgroundColor = taskItem.color
@@ -196,12 +196,13 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
       task = self.taskItem
     } else {
       task = Task(entity: Task.entity(), insertInto: context)
+      task.created_at = Date()
     }
     
     task.name = name
     task.color = selectedColor.backgroundColor ?? UIColor.white
     task.goal = goal
-    task.created_at = Date()
+    task.updated_at = Date()
     appDelegate?.saveContext()
     navigationController?.popToRootViewController(animated: true)
   }

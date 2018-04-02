@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import CoreData
 
 class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFieldDelegate {
 
+  weak private var appDelegate = (UIApplication.shared.delegate as? AppDelegate)!
+  private let context = (UIApplication.shared.delegate as? AppDelegate)!.persistentContainer.viewContext
   private weak var colorPickerHeightConstraint: NSLayoutConstraint?
   
-  var taskItem: TaskItem?
+  var taskItem: Task?
   var taskItemIndex: Int?
   
   // MARK: Views Definitions
@@ -138,8 +141,7 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
     
     // If here to edit item
     if let taskItem = taskItem {
-      nameField.text = taskItem.label
-      substituteField.text = taskItem.substitute
+      nameField.text = taskItem.name
       selectedColor.backgroundColor = taskItem.color
       selectedColor.setTitle("", for: .normal)
       goalField.text = taskItem.goal.description
@@ -187,17 +189,20 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
       return
     }
     
-    let goal = ((goalField.text != nil) && Int(goalField.text!) != nil) ? Int(goalField.text!)! : 0
-    let newTaskItem = TaskItem(name,
-                            substitute: substituteField.text,
-                            color: selectedColor.backgroundColor,
-                            goal: goal)
+    let goal = ((goalField.text != nil) && Int16(goalField.text!) != nil) ? Int16(goalField.text!)! : 0
     
-    if let taskItemIndex = taskItemIndex {
-      TaskItems.items[taskItemIndex] = newTaskItem
+    let task: Task!
+    if self.taskItem != nil {
+      task = self.taskItem
     } else {
-      TaskItems.items.append(newTaskItem)
+      task = Task(entity: Task.entity(), insertInto: context)
     }
+    
+    task.name = name
+    task.color = selectedColor.backgroundColor ?? UIColor.white
+    task.goal = goal
+    task.created_at = Date()
+    appDelegate?.saveContext()
     navigationController?.popToRootViewController(animated: true)
   }
   
@@ -243,20 +248,20 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
       nameField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 6/10),
       nameField.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
       
-      //Substitute
-      substituteLabel.leftAnchor.constraint(equalTo: nameLabel.leftAnchor),
-      substituteLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 15),
-      substituteLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
-      substituteLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
-      
-      substituteField.rightAnchor.constraint(equalTo: nameField.rightAnchor),
-      substituteField.topAnchor.constraint(equalTo: substituteLabel.topAnchor),
-      substituteField.widthAnchor.constraint(equalTo: nameField.widthAnchor),
-      substituteField.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+//      //Substitute
+//      substituteLabel.leftAnchor.constraint(equalTo: nameLabel.leftAnchor),
+//      substituteLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 15),
+//      substituteLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+//      substituteLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+//
+//      substituteField.rightAnchor.constraint(equalTo: nameField.rightAnchor),
+//      substituteField.topAnchor.constraint(equalTo: substituteLabel.topAnchor),
+//      substituteField.widthAnchor.constraint(equalTo: nameField.widthAnchor),
+//      substituteField.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
       
       //Color
       colorLabel.leftAnchor.constraint(equalTo: nameLabel.leftAnchor),
-      colorLabel.topAnchor.constraint(equalTo: substituteLabel.bottomAnchor, constant: 15),
+      colorLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 15),
       colorLabel.widthAnchor.constraint(equalTo: nameField.widthAnchor),
       colorLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
       

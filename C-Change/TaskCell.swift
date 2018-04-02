@@ -28,6 +28,14 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     return view
   }()
   
+  let lastDoneLabel: UILabel = {
+    let view = UILabel()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.textAlignment = .center
+    view.font = Constants.fontSmall
+    return view
+  }()
+  
   let deleteLabel: UILabel = {
     let view = UILabel()
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -79,6 +87,11 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
   
   override func layoutSubviews() {
     super.layoutSubviews()
+    
+    // Unproven fix to reset frame position of the contentView after return from "Edit" or "Delete" view
+    if panGesture.state == UIGestureRecognizerState.possible && contentView.frame.origin.x != 0 {
+      contentView.frame.origin.x = 0
+    }
     
     if panGesture.state == UIGestureRecognizerState.changed {
       let p: CGPoint = panGesture.translation(in: self)
@@ -149,6 +162,7 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
     
     contentView.addSubview(nameLabel)
     contentView.addSubview(goalLabel)
+    contentView.addSubview(lastDoneLabel)
     insertSubview(deleteLabel, belowSubview: contentView)
     insertSubview(editLabel, belowSubview: contentView)
     
@@ -156,7 +170,7 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
       
       // Name Label
       nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-      nameLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -10),
+      nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
       nameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -16),
       nameLabel.heightAnchor.constraint(equalToConstant: 30),
       
@@ -165,6 +179,12 @@ class TaskCell: UICollectionViewCell, UIGestureRecognizerDelegate {
       goalLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
       goalLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -16),
       goalLabel.heightAnchor.constraint(equalToConstant: 25),
+      
+      // Last Done Label
+      lastDoneLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+      lastDoneLabel.topAnchor.constraint(equalTo: goalLabel.bottomAnchor, constant: 8),
+      lastDoneLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: -16),
+      lastDoneLabel.heightAnchor.constraint(equalToConstant: 15),
       
       // Delete Label
       deleteLabel.topAnchor.constraint(equalTo: topAnchor),

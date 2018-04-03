@@ -29,7 +29,6 @@ class MainViewController: UICollectionViewController {
   // MARK: - Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view, typically from a nib.
     
     collectionView?.register(TaskCell.self, forCellWithReuseIdentifier: "taskCell")
     navigationItem.title = "Change"
@@ -49,10 +48,14 @@ class MainViewController: UICollectionViewController {
     
     fetchData()
     
-    if tasksFetchedRC.fetchedObjects?.count == 0 {
+    let numberOfObjects = tasksFetchedRC.fetchedObjects?.count
+    
+    // Load Intro View, if no objects found in CoreData
+    if numberOfObjects == 0 {
       navigationController?.pushViewController(IntroViewController(), animated: false)
     } else {
       navigationController?.navigationBar.isHidden = false
+      collectionView?.reloadData()  //Update data, when returning to VC from other VCs
     }
   }
   

@@ -114,6 +114,21 @@ class MainViewController: UICollectionViewController {
     let doneTimes = task.done?.count ?? 0
     
     taskCell.contentView.backgroundColor = task.color
+    
+    // Determine font color based on the background color [white/black]
+    var textColor = UIColor.black
+    if let taskComponents = task.color?.cgColor.components {
+      let red = taskComponents[0] * 255
+      let green = taskComponents[1] * 255
+      let blue = taskComponents[2] * 255
+      let brightness = (red * 299 + green * 587 + blue * 114) / 1000
+      textColor = (brightness < 123) ? .white : .black
+    }
+    textColor = textColor.withAlphaComponent(0.9)
+    taskCell.nameLabel.textColor = textColor
+    taskCell.goalLabel.textColor = textColor
+    taskCell.lastDoneLabel.textColor = textColor
+    
     taskCell.nameLabel.text = task.name!.uppercased()
     
     if task.goal > 0 {

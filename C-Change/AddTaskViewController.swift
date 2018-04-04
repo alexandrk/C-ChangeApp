@@ -56,6 +56,13 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
     return view
   }()
   
+  let countLabel: UILabel = {
+    let view = UILabel()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.text = "Count"
+    return view
+  }()
+  
   let messageLabel: UILabel = {
     let view = UILabel()
     view.translatesAutoresizingMaskIntoConstraints = false
@@ -100,6 +107,13 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
     return view
   }()
   
+  let countField: UIButton = {
+    let view = UIButton()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.setTitle("Change Count", for: .normal)
+    return view
+  }()
+  
   let saveButton: UIButton = {
     let view = UIButton()
     view.layer.borderColor = UIColor.black.cgColor
@@ -132,6 +146,8 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
     touchInsideSelectedColorView.minimumPressDuration = 0
     selectedColor.addGestureRecognizer(touchInsideSelectedColorView)
     
+    countField.addTarget(self, action: #selector(changeCount), for: .touchUpInside)
+    
     setupViews()
   }
   
@@ -146,6 +162,12 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
       selectedColor.setTitle("", for: .normal)
       goalField.text = taskItem.goal.description
     }
+  }
+  
+  @objc private func changeCount() {
+    let vc = CountTableViewController()
+    vc.fetchedTask = taskItem
+    navigationController?.pushViewController(vc, animated: true)
   }
   
   // MARK: HSBColorPickerDelegate Methods
@@ -233,6 +255,9 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
     view.addSubview(goalLabel)
     view.addSubview(goalField)
     
+    view.addSubview(countLabel)
+    view.addSubview(countField)
+    
     view.addSubview(messageLabel)
     view.addSubview(saveButton)
     
@@ -286,6 +311,17 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
       goalField.topAnchor.constraint(equalTo: goalLabel.topAnchor),
       goalField.widthAnchor.constraint(equalTo: nameField.widthAnchor),
       goalField.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+      
+      //Count
+      countLabel.leftAnchor.constraint(equalTo: nameLabel.leftAnchor),
+      countLabel.topAnchor.constraint(equalTo: goalLabel.bottomAnchor, constant: 15),
+      countLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+      countLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+      
+      countField.rightAnchor.constraint(equalTo: nameField.rightAnchor),
+      countField.topAnchor.constraint(equalTo: countLabel.topAnchor),
+      countField.widthAnchor.constraint(equalTo: nameField.widthAnchor),
+      countField.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
       
       //Message Label
       messageLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),

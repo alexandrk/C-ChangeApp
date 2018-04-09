@@ -211,7 +211,7 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
       return
     }
     
-    let goal = ((goalField.text != nil) && Int16(goalField.text!) != nil) ? Int16(goalField.text!)! : 0
+    let goal = ((goalField.text != nil) && Int64(goalField.text!) != nil) ? Int64(goalField.text!)! : 0
     
     let task: Task!
     if self.taskItem != nil {
@@ -273,17 +273,6 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
       nameField.topAnchor.constraint(equalTo: nameLabel.topAnchor),
       nameField.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 6/10),
       nameField.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
-      
-//      //Substitute
-//      substituteLabel.leftAnchor.constraint(equalTo: nameLabel.leftAnchor),
-//      substituteLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 15),
-//      substituteLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
-//      substituteLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
-//
-//      substituteField.rightAnchor.constraint(equalTo: nameField.rightAnchor),
-//      substituteField.topAnchor.constraint(equalTo: substituteLabel.topAnchor),
-//      substituteField.widthAnchor.constraint(equalTo: nameField.widthAnchor),
-//      substituteField.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
       
       //Color
       colorLabel.leftAnchor.constraint(equalTo: nameLabel.leftAnchor),

@@ -91,10 +91,13 @@ class MainViewController: UICollectionViewController {
   }
   
   // MARK: - CollectionView Methods
+  
+  // numberOfItemsInSection
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return tasksFetchedRC.fetchedObjects?.count ?? 0
   }
   
+  // cellForItemAt
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "taskCell", for: indexPath)
@@ -166,7 +169,8 @@ class MainViewController: UICollectionViewController {
     return taskCell
   }
   
-  // Increment number of items done on click
+  // didSelectItemAt
+  // (Increment number of items done on click)
   override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
     let done = TaskDone(entity: TaskDone.entity(), insertInto: context)
@@ -179,6 +183,7 @@ class MainViewController: UICollectionViewController {
     }
   }
   
+  // performAction
   override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
     switch action.description {
@@ -192,12 +197,32 @@ class MainViewController: UICollectionViewController {
     
   }
 
- override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    let itemInTransition = TaskItems.items.remove(at: sourceIndexPath.row)
-    TaskItems.items.insert(itemInTransition, at: destinationIndexPath.row)
+  // moveItemAt
+  override func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    
+    let item = tasksFetchedRC.object(at: sourceIndexPath)
+    var items = tasksFetchedRC.fetchedObjects
+    items?.remove(at: sourceIndexPath.row)
+    items?.insert(item, at: destinationIndexPath.row)
+    
+    reindex(items: items!)
+    
+    appDelegate?.saveContext()
+    
+    // re-enable fetchedResultsController updates
+    
   }
   
   // MARK: - Helper Functions
+  
+  // reindex
+  private func reindex(items: [Task]) {
+    for (index, item) in items.enumerated() {
+      item.displayIndex = Int64(index)
+    }
+  }
+  
+  //promptForDelete
   private func promptForDelete(_ collectionView: UICollectionView, _ indexPath: IndexPath) {
     
     let alert = UIAlertController(title: "Delete Item", message: "Are you sure you want to delete item '\(tasksFetchedRC.object(at: indexPath).name?.uppercased() ?? "N/A")'?", preferredStyle: .alert)
@@ -218,6 +243,7 @@ class MainViewController: UICollectionViewController {
     present(alert, animated: true, completion: nil)
   }
   
+  // editItem
   private func editItem(_ collectionView: UICollectionView, _ indexPath: IndexPath) {
     let vc = AddTaskViewController()
     vc.taskItem = tasksFetchedRC.object(at: indexPath)
@@ -225,17 +251,13 @@ class MainViewController: UICollectionViewController {
     navigationController?.pushViewController(vc, animated: true)
   }
   
+  // fetchData
   private func fetchData() {
     let request = Task.fetchRequest() as NSFetchRequest<Task>
+    let sortByDisplayIndex = NSSortDescriptor(key: #keyPath(Task.displayIndex), ascending: true, selector: nil)
+    let sortByCreatedAt = NSSortDescriptor(key: #keyPath(Task.created_at), ascending: false, selector: nil)
+    request.sortDescriptors = [sortByDisplayIndex, sortByCreatedAt]
     
-//    let sort = NSSortDescriptor(keyPath: \Friend.name, ascending: true)
-//    if !query.isEmpty {
-//      request.predicate = NSPredicate(format: "name CONTAINS[cd] %@", query)
-//    }
-    let sort = NSSortDescriptor(key: #keyPath(Task.name), ascending: true, selector: #selector(NSString.caseInsensitiveCompare(_:)))
-//    let color = NSSortDescriptor(key: #keyPath(Friend.eyeColor), ascending:true)
-    
-    request.sortDescriptors = [sort]
     do {
       tasksFetchedRC = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
       tasksFetchedRC.delegate = self
@@ -286,11 +308,11 @@ extension MainViewController: NSFetchedResultsControllerDelegate {
     }
 
     switch type {
-      case .insert: collectionView?.insertItems(at: [cellIndex])
-      case .delete: collectionView?.deleteItems(at: [cellIndex])
-      default: break
+    case .insert: collectionView?.insertItems(at: [cellIndex])
+    case .delete: collectionView?.deleteItems(at: [cellIndex])
+    //case .move: print("Moved within NSFetchedResultsController")
+    default: break
     }
   }
 
 }
-

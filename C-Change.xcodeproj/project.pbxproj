@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		113E95A3207497AE00038626 /* CountTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113E95A2207497AE00038626 /* CountTableViewController.swift */; };
 		1170AC012036BB0400213061 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1170AC002036BB0400213061 /* AppDelegate.swift */; };
 		1170AC032036BB0400213061 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1170AC022036BB0400213061 /* MainViewController.swift */; };
 		1170AC062036BB0400213061 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1170AC042036BB0400213061 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		113E95A2207497AE00038626 /* CountTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountTableViewController.swift; sourceTree = "<group>"; };
 		1170ABFD2036BB0400213061 /* C-Change.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "C-Change.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1170AC002036BB0400213061 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1170AC022036BB0400213061 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -33,6 +35,7 @@
 		1170AC1520378C5300213061 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		1170AC17203808BF00213061 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1170AC1920380B9100213061 /* IntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		1183BEBB207AF85F00264C76 /* C-Change v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "C-Change v2.xcdatamodel"; sourceTree = "<group>"; };
 		11A1A699203C0B9900CC5D97 /* AddTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
 		11A1A69A203C0B9900CC5D97 /* ColorPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPicker.swift; sourceTree = "<group>"; };
 		11E9A738206AF96C0033425E /* C-Change.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "C-Change.xcdatamodel"; sourceTree = "<group>"; };
@@ -75,6 +78,7 @@
 				1170AC022036BB0400213061 /* MainViewController.swift */,
 				11E9A737206AF96C0033425E /* C-Change.xcdatamodeld */,
 				1170AC1320378B0300213061 /* Datastore.swift */,
+				113E95A2207497AE00038626 /* CountTableViewController.swift */,
 				1170AC17203808BF00213061 /* Constants.swift */,
 				1170AC1520378C5300213061 /* TaskCell.swift */,
 				1170AC042036BB0400213061 /* Main.storyboard */,
@@ -176,6 +180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1170AC18203808BF00213061 /* Constants.swift in Sources */,
+				113E95A3207497AE00038626 /* CountTableViewController.swift in Sources */,
 				11E9A739206AF96C0033425E /* C-Change.xcdatamodeld in Sources */,
 				1170AC1620378C5300213061 /* TaskCell.swift in Sources */,
 				1170AC032036BB0400213061 /* MainViewController.swift in Sources */,
@@ -373,9 +378,10 @@
 		11E9A737206AF96C0033425E /* C-Change.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				1183BEBB207AF85F00264C76 /* C-Change v2.xcdatamodel */,
 				11E9A738206AF96C0033425E /* C-Change.xcdatamodel */,
 			);
-			currentVersion = 11E9A738206AF96C0033425E /* C-Change.xcdatamodel */;
+			currentVersion = 1183BEBB207AF85F00264C76 /* C-Change v2.xcdatamodel */;
 			path = "C-Change.xcdatamodeld";
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

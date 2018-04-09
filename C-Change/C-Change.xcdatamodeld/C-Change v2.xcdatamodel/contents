@@ -3,6 +3,7 @@
     <entity name="Task" representedClassName="Task" syncable="YES" codeGenerationType="class">
         <attribute name="color" attributeType="Transformable" customClassName="UIKit.UIColor" syncable="YES"/>
         <attribute name="created_at" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="displayIndex" attributeType="Integer 64" minValueString="0" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="goal" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="reset_count_logic" optional="YES" attributeType="String" syncable="YES"/>
@@ -15,7 +16,7 @@
         <relationship name="task" maxCount="1" deletionRule="Nullify" destinationEntity="Task" inverseName="done" inverseEntity="Task" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Task" positionX="-54" positionY="-9" width="128" height="150"/>
+        <element name="Task" positionX="-54" positionY="-9" width="128" height="165"/>
         <element name="TaskDone" positionX="-36" positionY="9" width="128" height="90"/>
     </elements>
 </model>

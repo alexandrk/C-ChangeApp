@@ -120,7 +120,7 @@ class MainViewController: UICollectionViewController {
     
     // Determine font color based on the background color [white/black]
     var textColor = UIColor.black
-    if let taskComponents = task.color?.cgColor.components {
+    if let taskComponents = task.color?.cgColor.components, taskComponents.count >= 3 {
       let red = taskComponents[0] * 255
       let green = taskComponents[1] * 255
       let blue = taskComponents[2] * 255

@@ -109,6 +109,8 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
   
   let countField: UIButton = {
     let view = UIButton()
+    view.layer.cornerRadius = 10
+    view.backgroundColor = UIColor.black
     view.translatesAutoresizingMaskIntoConstraints = false
     view.setTitle("Change Count", for: .normal)
     return view
@@ -222,7 +224,7 @@ class AddTaskViewController: UIViewController, HSBColorPickerDelegate, UITextFie
     }
     
     task.name = name
-    task.color = selectedColor.backgroundColor ?? UIColor.white
+    task.color = selectedColor.backgroundColor ?? UIColor.gray
     task.goal = goal
     task.updated_at = Date()
     appDelegate?.saveContext()
